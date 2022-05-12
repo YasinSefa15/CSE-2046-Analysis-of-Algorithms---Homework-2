@@ -1,9 +1,6 @@
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 public class Main {
 
     static int G; //The smallest number of colors needed to color a graph
@@ -14,6 +11,28 @@ public class Main {
 
     public static void main(String[] args) {
         nodes = new ArrayList<>();
+        readInput(); //reads the sample files and creates nodes
+        sortNodes(); //sorts the nodes
+        assignColors(); //assign colors to each node
+        printOutput(); //prints the output
+    }
+
+    //assigns proper colors to each node
+    static void assignColors(){
+
+    }
+
+    //prints the G and color of all nodes starting from first vertex
+    static void printOutput(){
+
+    }
+
+    //sorts nodes list depending on their values
+    static void sortNodes(){
+
+    }
+
+    static void readInput(){
         int sampleId = 1;
         String line;
 

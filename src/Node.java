@@ -3,7 +3,7 @@ public class Node {
 
     ArrayList<Node> neighbours;
     int value;
-    String color;
+    int colorCode;
 
     Node(int value){
         this.neighbours = new ArrayList<>();
@@ -29,8 +29,8 @@ public class Node {
         return this.value;
     }
 
-    void setColor(String color){
-        this.color = color;
+    void setColoCode(int colorCode){
+        this.colorCode = colorCode;
     }
 
 
