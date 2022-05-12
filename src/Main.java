@@ -13,6 +13,7 @@ public class Main {
         nodes = new ArrayList<>();
         readInput(); //reads the sample files and creates nodes
         sortNodes(); //sorts the nodes
+        sortNodesNeighbours();
         assignColors(); //assign colors to each node
         printOutput(); //prints the output
     }
@@ -25,6 +26,14 @@ public class Main {
     //prints the G and color of all nodes starting from first vertex
     static void printOutput(){
 
+    }
+
+    //sorts each nodes neighbours depending on neighbours values
+    static void sortNodesNeighbours(){
+        //calls sortNeighbours for each node
+        for (Node node : nodes){
+            node.sortNeighbours();
+        }
     }
 
     //sorts nodes list depending on their values
