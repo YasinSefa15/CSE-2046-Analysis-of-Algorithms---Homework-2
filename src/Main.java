@@ -1,5 +1,6 @@
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 public class Main {
 
@@ -7,25 +8,28 @@ public class Main {
     static ArrayList<Node> nodes;
     static int totalNumberOfNodes;
     static int totalNumberOfEdges;
-    static int totalReadNodes = 0; //to check the reading is successful
+    //static int totalReadNodes = 0; //to check the reading is successful
 
     public static void main(String[] args) {
         nodes = new ArrayList<>();
         readInput(); //reads the sample files and creates nodes
         sortNodes(); //sorts the nodes
         sortNodesNeighbours();
-        assignColors(); //assign colors to each node
-        printOutput(); //prints the output
+        //assignColors(); //assign colors to each node
+        //printOutput(); //prints the output
     }
 
     //assigns proper colors to each node
-    static void assignColors(){
-
+    static void assignColors(Node node, int currentColorCode){
+        //can be written recursively or in a while loop
     }
 
     //prints the G and color of all nodes starting from first vertex
     static void printOutput(){
-
+        System.out.println(G);
+        for (Node node : nodes){
+            System.out.print(node.colorCode + " ");
+        }
     }
 
     //sorts each nodes neighbours depending on neighbours values
@@ -38,14 +42,15 @@ public class Main {
 
     //sorts nodes list depending on their values
     static void sortNodes(){
-
+        Collections.sort(nodes);
     }
 
-    static void readInput(){
+    //reads input from sample txt files
+    static void readInput() {
         int sampleId = 1;
         String line;
 
-        int totalReadEdges = 0; //to check the reading is successful
+        //int totalReadEdges = 0; //to check the reading is successful
         int firstVertexNumber;
         int secondVertexNumber;
         Node firstNode;
@@ -64,14 +69,14 @@ public class Main {
                 firstVertexNumber = Integer.parseInt(line.substring(line.indexOf(" ") + 1, line.lastIndexOf(" ")));
                 //gets the second vertex value
                 secondVertexNumber = Integer.parseInt(line.substring(line.lastIndexOf(" ") + 1));
-                totalReadEdges++;
+                //totalReadEdges++;
                 //findOrCreate will return the node
                 firstNode = findOrCreate(firstVertexNumber);
                 secondNode = findOrCreate(secondVertexNumber);
                 firstNode.addNeighbour(secondNode);
             }
-            System.out.println(totalReadNodes);
-            System.out.println(totalReadEdges);
+            //System.out.println(totalReadNodes);
+            //System.out.println(totalReadEdges);
             input.close();
         }
         catch(Exception e) {
@@ -80,6 +85,7 @@ public class Main {
         }
     }
 
+    //returns the searched node from nodes list
     static Node findOrCreate(int value){
         for (Node node : nodes){ //searches for the node
             if (node.value == value){
@@ -87,7 +93,7 @@ public class Main {
             }
         }
         Node node = new Node(value); //creates the node and increments the totalReadNodes variable
-        totalReadNodes++;
+        //totalReadNodes++;
         nodes.add(node);
         return node;
     }

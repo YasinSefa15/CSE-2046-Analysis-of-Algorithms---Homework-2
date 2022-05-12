@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-public class Node {
+import java.util.Collections;
+
+public class Node implements Comparable{
 
     ArrayList<Node> neighbours;
     int value;
@@ -18,20 +20,26 @@ public class Node {
     }
 
     void sortNeighbours(){
-        System.out.println("gonna sort later");
+        Collections.sort(neighbours);
+
     }
 
-    ArrayList<Node> getNeighbours(){
-        return this.neighbours;
-    }
-
-    int getValue(){
-        return this.value;
+    void printNeighbours(){
+        System.out.println("Node : " + value);
+        for (Node n : neighbours){
+            System.out.print(n.value + " ");
+        }
+        System.out.println();
+        System.out.println("----------------------");
     }
 
     void setColoCode(int colorCode){
         this.colorCode = colorCode;
     }
 
-
+    @Override
+    public int compareTo(Object node) {
+        int compareValue=((Node)node).value;
+        return value - compareValue;
+    }
 }
