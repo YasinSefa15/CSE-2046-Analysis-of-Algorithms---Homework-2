@@ -4,7 +4,7 @@ public class Main {
 
     static int G; //The smallest number of colors needed to color a graph
     static ArrayList<Node> originalNodes;
-    static ArrayList<Node> updatedNodes;
+    static ArrayList<Node> copyNodes;
     static ArrayList<Integer> originalAssignedColorCodes;
     static ArrayList<Integer> updatedAssignedColorCodes;
     static int totalNumberOfNodes;
@@ -46,7 +46,7 @@ public class Main {
 
     public static void main(String[] args) {
         originalNodes = new ArrayList<>();
-        updatedNodes = new ArrayList<>();
+        copyNodes = new ArrayList<>();
         originalAssignedColorCodes = new ArrayList<>();
         updatedAssignedColorCodes = new ArrayList<>();
         NodeOperation.readInput(); //reads the sample files and creates nodes

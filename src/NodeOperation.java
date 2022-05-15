@@ -9,12 +9,41 @@ public class NodeOperation {
         Main.updatedAssignedColorCodes = new ArrayList<>();
 
         //burada asıl renk kodlarını koşul koyup tüm olasılıklar denenebilir
+
+        for (int i : Main.originalAssignedColorCodes){
+            for (Node node : Main.copyNodes){
+                node.colorCode = i;
+                for (Node neighbour : node.neighbours){
+                    for (int j : Main.originalAssignedColorCodes){
+                        if (node.colorCode == j){
+                            continue;
+                        }
+
+                    }
+                }
+                if (Main.updatedAssignedColorCodes.size() < Main.originalAssignedColorCodes.size()){
+                    updateOriginalColorCode();
+                }
+            }
+        }
+
+
+
+    }
+
+    static void recursive(Node currentNode, int colorCode){
+
     }
 
     static void formatColors(){
-        for (Node node : Main.updatedNodes){
+        for (Node node : Main.copyNodes){
             node.setColoCode(0);
         }
+    }
+
+    static void updateOriginalColorCode(){
+        Main.originalAssignedColorCodes = new ArrayList<>();
+        Main.originalAssignedColorCodes.addAll(Main.updatedAssignedColorCodes);
     }
 
     //reads input from sample txt files
@@ -25,8 +54,10 @@ public class NodeOperation {
         //int totalReadEdges = 0; //to check the reading is successful
         int firstVertexNumber;
         int secondVertexNumber;
-        Node firstNode;
-        Node secondNode;
+        Node originalFirstNode;
+        Node copyFirstNode;
+        Node originalSecondNode;
+        Node copySecondNode;
 
         int asd = 0;
         try {
@@ -50,9 +81,12 @@ public class NodeOperation {
                     asd++;
                 //totalReadEdges++;
                 //findOrCreate will return the node
-                firstNode = findOrCreate(firstVertexNumber);
-                secondNode = findOrCreate(secondVertexNumber);
-                firstNode.addNeighbour(secondNode);
+                originalFirstNode = findOrCreate(firstVertexNumber);
+                copyFirstNode = findOrCreate(firstVertexNumber);
+                originalSecondNode = findOrCreate(secondVertexNumber);
+                copySecondNode = findOrCreate(secondVertexNumber);
+                originalFirstNode.addNeighbour(originalSecondNode);
+                copyFirstNode.addNeighbour(copySecondNode);
             }
             //System.out.println(totalReadNodes);
             //System.out.println(totalReadEdges);
@@ -95,7 +129,7 @@ public class NodeOperation {
     static void printOutput(){
         String list = getCorrectNodeList();
         ArrayList<Node> nodes = null;
-        nodes = list.equals("updated") ? Main.updatedNodes : Main.originalNodes;
+        nodes = list.equals("updated") ? Main.copyNodes : Main.originalNodes;
 
         System.out.println("G = " + (list.equals("updated") ? Main.updatedAssignedColorCodes.size() : Main.originalAssignedColorCodes.size()));
         System.out.println("vertex " + nodes.size());
@@ -105,12 +139,12 @@ public class NodeOperation {
     }
 
     static String getCorrectNodeList(){
-        if (Main.originalNodes.size() == 0 && Main.updatedNodes.size() != 0 ){
+        if (Main.originalNodes.size() == 0 && Main.copyNodes.size() != 0 ){
             return "updated";
-        }else if(Main.originalNodes.size() != 0 && Main.updatedNodes.size() == 0){
+        }else if(Main.originalNodes.size() != 0 && Main.copyNodes.size() == 0){
             return "original";
         }else if(Main.originalAssignedColorCodes.size() > Main.updatedAssignedColorCodes.size()){
-            return "original";
+            return "updated";
         }
         System.out.println("hata line 98");
         System.exit(9);
