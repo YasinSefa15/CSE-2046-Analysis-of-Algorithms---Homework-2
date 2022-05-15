@@ -13,6 +13,44 @@ public class Node implements Comparable{
 
     }
 
+    int updateColorCode(){
+        for (Node neighbour : neighbours){
+            if (neighbour.colorCode == this.colorCode){
+                //System.out.println("atama başarılı");
+                this.colorCode++;
+            }
+        }
+        return this.colorCode;
+
+    }
+
+
+    int assignColor(){
+       //System.out.println(colorCode + " " + index);
+        //for (Node neighbour : neighbours){
+        //system.out.println(neighbours.size());
+        //System.out.println(index < neighbours.size());
+
+        this.colorCode = 0;
+
+        for (int i = 0 ; i < neighbours.size() ; i++){
+            //if (neighbours.get(index).colorCode == this.colorCode){
+                //System.out.println("aynı renk");
+            if (neighbours.get(i).colorCode == this.colorCode){
+                i = -1;
+                this.colorCode = this.colorCode + 1;
+            }
+
+        }
+
+            //this.colorCode = colorCode;
+
+
+
+
+        return this.colorCode;
+    }
+
     void addNeighbour(Node neighbour){
         if (!neighbours.contains(neighbour)){
             neighbours.add(neighbour);
