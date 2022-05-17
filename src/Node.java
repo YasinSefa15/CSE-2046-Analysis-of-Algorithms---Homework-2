@@ -6,11 +6,12 @@ public class Node implements Comparable{
     ArrayList<Node> neighbours;
     int value;
     int colorCode;
+    boolean done;
 
     Node(int value){
         this.neighbours = new ArrayList<>();
         this.value = value;
-
+        this.done = false;
     }
 
     int updateColorCode(){
@@ -26,29 +27,24 @@ public class Node implements Comparable{
 
 
     int assignColor(){
-       //System.out.println(colorCode + " " + index);
-        //for (Node neighbour : neighbours){
-        //system.out.println(neighbours.size());
-        //System.out.println(index < neighbours.size());
-
         this.colorCode = 0;
 
         for (int i = 0 ; i < neighbours.size() ; i++){
-            //if (neighbours.get(index).colorCode == this.colorCode){
-                //System.out.println("aynı renk");
             if (neighbours.get(i).colorCode == this.colorCode){
                 i = -1;
                 this.colorCode = this.colorCode + 1;
             }
-
         }
-
-            //this.colorCode = colorCode;
-
-
-
-
         return this.colorCode;
+    }
+
+    static boolean validateNeighboursColor(Node node ,int colorCode){
+        for (Node neighbour : node.neighbours){
+            if (neighbour.colorCode == colorCode ){
+                return false;
+            }
+        }
+        return true;
     }
 
     void addNeighbour(Node neighbour){
@@ -56,6 +52,8 @@ public class Node implements Comparable{
             neighbours.add(neighbour);
         }
     }
+
+
 
     void sortNeighbours(){
         Collections.sort(neighbours);
