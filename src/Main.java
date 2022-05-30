@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 public class Main {
-
+//  errorrrrrr
     static int G; //The smallest number of colors needed to color a graph
     static ArrayList<Node> nodes;
     static int totalNumberOfNodes;
