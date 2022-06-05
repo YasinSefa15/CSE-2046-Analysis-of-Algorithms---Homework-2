@@ -1,65 +1,43 @@
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class Vertex {
+public class Vertex implements Comparable{
 
-    ArrayList<Vertex> neighbours;
+    ArrayList<Vertex> neighbors;
     int value;
     int colorCode;
     boolean done;
 
     Vertex(int value){
-        this.neighbours = new ArrayList<>();
+        this.neighbors = new ArrayList<>();
         this.value = value;
         this.done = false;
     }
 
-    int updateColorCode(){
-        for (Vertex neighbour : neighbours){
-            if (neighbour.colorCode == this.colorCode){
-                //System.out.println("atama başarılı");
-                this.colorCode++;
-            }
-        }
-        return this.colorCode;
 
-    }
-
-
+    //assigns color by checking its neighbor. First algorithm uses it
     int assignColor(){
         this.colorCode = 0;
 
-        for (int i = 0 ; i < neighbours.size() ; i++){
-            if (neighbours.get(i).colorCode == this.colorCode){
-                i = -1;
+        for (int i = 0; i < neighbors.size() ; i++){
+            if (neighbors.get(i).colorCode == this.colorCode){
+                i = -1; //if color is not assignable return to first element and check with incremented value
                 this.colorCode = this.colorCode + 1;
             }
         }
         return this.colorCode;
     }
 
-    static boolean validateNeighboursColor(Vertex node ,int colorCode){
-        for (Vertex neighbour : node.neighbours){
-            if (neighbour.colorCode == colorCode ){
-                return false;
-            }
-        }
-        return true;
-    }
 
     void addNeighbour(Vertex neighbour){
-        if (!neighbours.contains(neighbour)){
-            neighbours.add(neighbour);
+        if (!neighbors.contains(neighbour)){
+            neighbors.add(neighbour);
         }
     }
 
 
-    void printNeighbours(){
-        System.out.println("Node : " + value);
-        for (Vertex n : neighbours){
-            System.out.print(n.value + " ");
-        }
-        System.out.println();
-        System.out.println("----------------------");
+    @Override
+    public int compareTo(Object node) {
+        int compareValue=((Vertex)node).value;
+        return value - compareValue;
     }
 }

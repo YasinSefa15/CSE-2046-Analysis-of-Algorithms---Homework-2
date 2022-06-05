@@ -1,120 +1,76 @@
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class VertexOperation {
     static int G; //The smallest number of colors needed to color a graph
-    static ArrayList<Vertex> originalVertexes;
-    static ArrayList<Vertex> copyVertexes;
-    static ArrayList<Integer> originalAssignedColorCodes;
-    static ArrayList<Integer> updatedAssignedColorCodes;
-    static ArrayList<Integer> assignableColorCodes;
-    static int totalNumberOfNodes;
-    static int totalNumberOfEdges;
+    static ArrayList<Vertex> originalVertices; //will keep original read vertexes. First algorithm will use it
+    static ArrayList<Vertex> copyVertices; //second algorithm will use it
+    static ArrayList<Integer> originalAssignedColorCodes; //color that assigned by the first algorithm
+    static int sampleId;
 
-    static void setInıt(){
-        originalVertexes = new ArrayList<>();
-        copyVertexes = new ArrayList<>();
+    static void setInıt(int sampleId){
+        VertexOperation.sampleId = sampleId;
+        originalVertices = new ArrayList<>();
+        copyVertices = new ArrayList<>();
         originalAssignedColorCodes = new ArrayList<>();
-        updatedAssignedColorCodes = new ArrayList<>();
-        assignableColorCodes = new ArrayList<>();
-    }
-
-    static void updateColors(){
-        formatColors();
-
-        assignableColorCodes = new ArrayList<>();
-        for (int color = 0 ; color < originalAssignedColorCodes.size() ; color++){
-            assignableColorCodes.add(color);
-        }
-
-        System.out.println("o : " + originalAssignedColorCodes);
-        System.out.println("assi : " + assignableColorCodes);
-
-        int i = 0; //for debugging
-
-        System.out.println("upda : " + updatedAssignedColorCodes);
-
-        System.out.println(Coloring.validateAssignedColor("nau nau"));
-
-        if (!Coloring.validateAssignedColor("updated")){
-            updatedAssignedColorCodes.clear();
-            //copyVertexes = new ArrayList<>();
-        }
-
-    }
-
-    static void setUpdatedAssignedColorCodes(int currentColorCode){
-
-        if (!updatedAssignedColorCodes.contains(currentColorCode)){
-            updatedAssignedColorCodes.add(currentColorCode);
-        }
     }
 
 
-
-    //prints the G and color of all nodes starting from first vertex
+    //prints the G and color of all nodes starting from first vertex by best result found by algorithm
     static void printOutput(){
-        String list = getCorrectNodeList();
-        System.out.println("LİST : " + list);
-        //System.exit(88);
-        ArrayList<Vertex> nodes = null;
-        nodes = list.equals("updated") ? copyVertexes : originalVertexes;
-        //System.out.println("color of " + originalVertexes.get(1).colorCode);
-        //System.out.println(copyVertexes.get(1).colorCode);
-        System.out.println("G = " + (list.equals("updated") ? updatedAssignedColorCodes.size() : originalAssignedColorCodes.size()));
-        //System.out.println("vertex " + nodes.size());
-        for (Vertex node : nodes){
-            System.out.print(node.value + ":" + node.colorCode + " ");//
-        }
-        System.out.println();
-    }
-
-    static String getCorrectNodeList(){
-        if(updatedAssignedColorCodes.size() != 0 && originalAssignedColorCodes.size() > updatedAssignedColorCodes.size()){
-            return "updated";
-        }else {
-            return "original";
+        if (Coloring.usedColorCode.size() > originalAssignedColorCodes.size()){
+            print(originalVertices, originalAssignedColorCodes.size());
+        }else{
+            print(Coloring.copyVertices, Coloring.usedColorCode.size());
         }
     }
 
-    static void formatColors(){
-        for (Vertex vertex : copyVertexes){
-            vertex.value = 0;
+    static void print(ArrayList<Vertex> nodes, int G){
+        try
+        {
+            String filename= "test_output"+ sampleId +".txt";
+            FileWriter fw = new FileWriter(filename);
+            fw.write(G + "\n");
+            for (Vertex node : nodes){
+                fw.write(node.colorCode + " ");
+                //System.out.print(node.colorCode  " ");
+            }
+            fw.close();
+        }
+        catch(Exception ioe)
+        {
+            System.err.println("IOException: " + ioe.getMessage());
+            System.exit(2);
         }
     }
 
+    //updates neighbour. Checks two vertexes whether they're placed in neighbors mutual or not
     static void updateNeighbours(){
-        for (Vertex firstNode : originalVertexes){
-            for (Vertex secondNode : originalVertexes){
-                if (firstNode.neighbours.contains(secondNode) && !secondNode.neighbours.contains(firstNode)){
-                    secondNode.neighbours.add(firstNode);
-                }else if (!firstNode.neighbours.contains(secondNode) && secondNode.neighbours.contains(firstNode)){
-                    firstNode.neighbours.add(secondNode);
+        for (Vertex firstNode : originalVertices){
+            for (Vertex secondNode : originalVertices){
+                if (firstNode.neighbors.contains(secondNode) && !secondNode.neighbors.contains(firstNode)){
+                    secondNode.neighbors.add(firstNode);
+                }else if (!firstNode.neighbors.contains(secondNode) && secondNode.neighbors.contains(firstNode)){
+                    firstNode.neighbors.add(secondNode);
                 }
             }
         }
 
-
-        //copy nodes neighbours didnt update earlier. can check later
-        for (Vertex firstNode : copyVertexes){
-            for (Vertex secondNode : copyVertexes){
-                if (firstNode.neighbours.contains(secondNode) && !secondNode.neighbours.contains(firstNode)){
-                    secondNode.neighbours.add(firstNode);
-                }else if (!firstNode.neighbours.contains(secondNode) && secondNode.neighbours.contains(firstNode)){
-                    firstNode.neighbours.add(secondNode);
+        for (Vertex firstNode : copyVertices){
+            for (Vertex secondNode : copyVertices){
+                if (firstNode.neighbors.contains(secondNode) && !secondNode.neighbors.contains(firstNode)){
+                    secondNode.neighbors.add(firstNode);
+                }else if (!firstNode.neighbors.contains(secondNode) && secondNode.neighbors.contains(firstNode)){
+                    firstNode.neighbors.add(secondNode);
                 }
             }
         }
-
-        //originalVertexes.get(0).colorCode = 0;
     }
 
     //reads input from sample txt files
     static void readInput() {
-        int sampleId = 1;
         String line;
-
-        //int totalReadEdges = 0; //to check the reading is successful
         int firstVertexNumber;
         int secondVertexNumber;
         Vertex originalFirstNode;
@@ -123,13 +79,13 @@ public class VertexOperation {
         Vertex copySecondNode;
 
         try {
-            FileInputStream fis = new FileInputStream("sample" + sampleId +".txt"); //dynamic input file
+            FileInputStream fis = new FileInputStream("test" + sampleId +".txt"); //dynamic input file
             Scanner input = new Scanner(fis);
-            if (input.hasNextLine()){ //getting total number of nodes and total number of edges
+            //to pass the first line
+            if (input.hasNextLine()){
                 line = input.nextLine();
-                totalNumberOfNodes = Integer.parseInt(line.substring(line.indexOf(" ") + 1, line.lastIndexOf(" ")));
-                totalNumberOfEdges = Integer.parseInt(line.substring(line.lastIndexOf(" ") + 1));
             }
+
             while(input.hasNextLine()) {
                 line = input.nextLine();
                 //gets the first vertex value
@@ -146,7 +102,6 @@ public class VertexOperation {
                 copySecondNode = findOrCreate(secondVertexNumber,"copy");
 
                 originalFirstNode.addNeighbour(originalSecondNode);
-
                 copyFirstNode.addNeighbour(copySecondNode);
             }
             input.close();
@@ -160,25 +115,24 @@ public class VertexOperation {
     //returns the searched node from nodes list
     static Vertex findOrCreate(int value, String list){
         if (list.equals("original")){
-            for (Vertex node : originalVertexes){ //searches for the node
+            for (Vertex node : originalVertices){ //searches for the node
                 if (node.value == value){
                     return node; //node is found and returned
                 }
             }
             Vertex node = new Vertex(value); //creates the node and increments the totalReadNodes variable
-            originalVertexes.add(node);
+            originalVertices.add(node);
             return node;
         }else{
-            for (Vertex node : copyVertexes){ //searches for the node
+            for (Vertex node : copyVertices){ //searches for the node
                 if (node.value == value){
                     return node; //node is found and returned
                 }
             }
             Vertex copyNode = new Vertex(value); //copies the currently created node
-            copyVertexes.add(copyNode);
+            copyVertices.add(copyNode);
             return copyNode;
         }
-        //totalReadNodes++;
     }
 
 }
