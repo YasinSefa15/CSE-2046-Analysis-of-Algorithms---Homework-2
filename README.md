@@ -1,4 +1,4 @@
-# Project-2
+# Graph Coloring Problem
 ## Contributors
 * Murat Özcan - 150119008
 * Berkkan Rençber - 159119011
